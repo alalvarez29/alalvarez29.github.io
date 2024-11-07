@@ -48,16 +48,16 @@ In this example, we have two functions, `main` and `sum`. In order to understand
 For the `main` function:
 
 ```c
-0x000055555555513d <+0>:	push   %rbp
-0x000055555555513e <+1>:	mov    %rsp,%rbp
-0x0000555555555141 <+4>:	sub    $0x10,%rsp
-0x0000555555555145 <+8>:	mov    $0x14,%esi
-0x000055555555514a <+13>:	mov    $0xa,%edi
-0x000055555555514f <+18>:	call   0x555555555129 <sum>
-0x0000555555555154 <+23>:	mov    %eax,-0x4(%rbp)
-0x0000555555555157 <+26>:	nop
-0x0000555555555158 <+27>:	leave
-0x0000555555555159 <+28>:	ret
+push   %rbp
+mov    %rsp,%rbp
+sub    $0x10,%rsp
+mov    $0x14,%esi
+mov    $0xa,%edi
+call   <sum>
+mov    %eax,-0x4(%rbp)
+nop
+leave
+ret
 ```
 
 Suppose you are in the `main` function. The first thing the program does is save the value of the `rbp` register (which points to the base of the caller's stack frame) onto the stack. This is helpful because allow the `main` function to restore the stack to its correct state when it finishes.
@@ -71,15 +71,15 @@ The next step is set up the arguments required for the `sum` function. In this c
 This is the Assembly code for the `sum` function:
 
 ```c
-0x0000555555555129 <+0>:	push   %rbp
-0x000055555555512a <+1>:	mov    %rsp,%rbp
-0x000055555555512d <+4>:	mov    %edi,-0x4(%rbp)
-0x0000555555555130 <+7>:	mov    %esi,-0x8(%rbp)
-0x0000555555555133 <+10>:	mov    -0x4(%rbp),%edx
-0x0000555555555136 <+13>:	mov    -0x8(%rbp),%eax
-0x0000555555555139 <+16>:	add    %edx,%eax
-0x000055555555513b <+18>:	pop    %rbp
-0x000055555555513c <+19>:	ret
+push   %rbp
+mov    %rsp,%rbp
+mov    %edi,-0x4(%rbp)
+mov    %esi,-0x8(%rbp)
+mov    -0x4(%rbp),%edx
+mov    -0x8(%rbp),%eax
+add    %edx,%eax
+pop    %rbp
+ret
 ```
 
 It follows the same process as the `main` function. The function starts saving the value of the base pointer from the calling function (`main` in this case) and setting up the stack frame, next, it stores the arguments into local variables onto the stack (through `edi` and `esi` registers).
